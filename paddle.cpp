@@ -1,25 +1,20 @@
-#include "paddle.hpp"
+#include "paddle.h"
 
-Paddle::Paddle(int x, int y) {
-	m_position.x = x;
-	m_position.y = y;
-	m_position.w = 50;
-	m_position.h = 100;
+Paddle::Paddle(int x, int y, int w, int h, float s, int winH) {
+	rect = { x, y, w, h }; //init pos size
+	speed = s; // init speed
+	windowHeight = winH; // init window height
 }
 
-void Paddle::handle_input(SDL_Event const& event) {
-	switch (event.type) {
-	case SDL_KEYDOWN: 
-		Uint8 const* keys = SDL_GetKeyboardState(nullptr);
+// for the movement
 
-		if(m_type == )
-	}
+void Paddle::movement(float deltaY) {
+	rect.y += deltaY * speed; // move the paddle
+	if (rect.y < 0) rect.y = 0; // boundary for top
+	if (rect.y > windowHeight - rect.h) rect.y = windowHeight - rect.h; // boundary for bottom
 }
 
-void Paddle::update(double delta_time) {
-	
-}
-
-void Paddle::draw() {
-
+void Paddle::render(SDL_Renderer* renderer) {
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // color
+	SDL_RenderFillRect(renderer, &rect); // drawing the paddle
 }

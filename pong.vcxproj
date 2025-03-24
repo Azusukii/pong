@@ -19,16 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="ball.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="paddle.cpp" />
-    <ClCompile Include="pong.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ball.hpp" />
-    <ClInclude Include="game.hpp" />
-    <ClInclude Include="pong.hpp" />
-    <ClInclude Include="paddle.hpp" />
+    <ClInclude Include="ball.h" />
+    <ClInclude Include="paddle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -83,8 +80,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\SDL2.32.0\SDL2-2.32.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\SDL2.32.0\SDL2-2.32.0\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\LENOVO\Downloads\SDL2_image-devel-2.8.5-VC\SDL2_image-2.8.5\include;D:\SDL2.32.0\SDL2-2.32.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\LENOVO\Downloads\SDL2_image-devel-2.8.5-VC\SDL2_image-2.8.5\lib\x64;D:\SDL2.32.0\SDL2-2.32.0\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,7 +121,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>"D:\SDL2.32.0\SDL2-2.32.0\lib\x64\SDL2.lib";"D:\SDL2.32.0\SDL2-2.32.0\lib\x64\SDL2main.lib";"D:\SDL2.32.0\SDL2-2.32.0\lib\x64\SDL2test.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"D:\SDL2.32.0\SDL2-2.32.0\lib\x64\SDL2.lib";"D:\SDL2.32.0\SDL2-2.32.0\lib\x64\SDL2main.lib";"D:\SDL2.32.0\SDL2-2.32.0\lib\x64\SDL2test.lib";"C:\Users\LENOVO\Downloads\SDL2_image-devel-2.8.5-VC\SDL2_image-2.8.5\lib\x64\SDL2_image.lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
