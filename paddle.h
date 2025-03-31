@@ -7,7 +7,7 @@ public:
 	float speed;   // for the speed (duh)
 	int windowHeight; // for the window height
 
-	Paddle(int x, int y, int w, int h, float s, int winH); //constructor (note to self does not have the form with {} at the end)
+	Paddle(int x, int y, int w, int h, float s, int winH); //constructor 
 		void movement(float deltaY); // for the movement
-		void render(SDL_Renderer * renderer); // for rendering
+		void render(SDL_Renderer* renderer) const; // for rendering
 };
