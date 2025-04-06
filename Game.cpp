@@ -43,7 +43,7 @@ bool Game::init() {
 		return false;
 	}
 
-	if (!textRenderer.init("fonts/PressStart2P-vaV7.ttf", 28)) {
+	if (!textRenderer.init("fonts/PressStart2P-vaV7.ttf", "fonts/KarmaticArcade-6Yrp1.ttf", 28, 48)) {
 		std::cerr << "TextRenderer initialization messed up!" << std::endl;
 		return false;
 	}
@@ -157,7 +157,7 @@ void Game::render() {
 	// update render based on state
 	switch (currentState) {
 	case GameState::State::TITLE:
-		textRenderer.renderCenteredText(SDL_renderer, "PONGGERS", Constants::SCREEN_HEIGHT / 3, { 255, 255, 255, 255 });
+		textRenderer.renderTitleCenteredText(SDL_renderer, "PONGGERS", Constants::SCREEN_HEIGHT / 3, { 255, 255, 255, 255 });
 		textRenderer.renderCenteredText(SDL_renderer, "Press SPACE to start!", Constants::SCREEN_HEIGHT / 2, { 255, 255, 255, 255 });
 		textRenderer.renderCenteredText(SDL_renderer, "A small game by Azura", Constants::SCREEN_HEIGHT / 1.5, { 255, 255, 255, 255 });
 		break;
