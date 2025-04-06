@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Constants.h"
 
 Renderer::Renderer(SDL_Renderer* sdlRenderer) : renderer(sdlRenderer) {
     std::cout << "Renderer constructor called with renderer: " << (renderer ? "valid" : "invalid") << std::endl;
@@ -29,6 +30,13 @@ void Renderer::render(const Ball& ball, const Paddle& leftPaddle, const Paddle& 
     
     std::cout << "Rendering right paddle at: (" << rightPaddle.rect.x << ", " << rightPaddle.rect.y << ")" << std::endl;
     rightPaddle.render(renderer);
+
+    // render center dividing line
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100); // white with a lil transparency
+    for (int y = 0; y < Constants::SCREEN_HEIGHT; y += 20) {
+		SDL_Rect lineSegment = { Constants::SCREEN_WIDTH / 2 - 2, y, 4, 10 };
+		SDL_RenderFillRect(renderer, &lineSegment);
+    }
 }
 
 void Renderer::present() {

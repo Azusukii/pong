@@ -14,7 +14,7 @@ namespace Constants {
 	const int BALL_SPEED_X = 5;
 	const int BALL_SPEED_Y = 5;
 	// scores
-	const int WINNING_SCORE = 99999;
+	const int WINNING_SCORE = 5;
 	// positions
 	const int LEFT_PADDLE_X = 10;
 	const int RIGHT_PADDLE_X = SCREEN_WIDTH - 20;
@@ -25,4 +25,13 @@ namespace Constants {
 	//display message
 	const int MESSAGE_DISPLAY_TIME = 3000; //3000ms approx 3 sec
 	const int MESSAGE_Y_POS = SCREEN_HEIGHT / 2 - 50; // text pos middle of screen
+}
+
+namespace GameState {
+	enum class State {
+		TITLE,
+		PLAYING,
+		PAUSED,
+		GAME_OVER
+	};
 }

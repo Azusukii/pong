@@ -32,3 +32,8 @@ int ScoreManager::getRightScore() const {
 void ScoreManager::displayScore() const {
 	std::cout << "Left: " << leftScore << " | Right: " << rightScore << std::endl;
 }
+void ScoreManager::reset() {
+	leftScore = 0;
+	rightScore = 0;
+	std::cout << "Scores reset to Left: " << leftScore << " | Right: " << rightScore << std::endl;
+}

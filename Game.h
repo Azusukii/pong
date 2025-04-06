@@ -19,6 +19,7 @@ public:
 	void update();
 	void render();
 	void clean();
+
 private: 
 	SDL_Window* window;
 	SDL_Renderer* SDL_renderer;
@@ -33,4 +34,7 @@ private:
 	bool showScoreMessage;
 	std::string scoreMessage;
 	Uint32 messageStartTime;
+	GameState::State currentState;
+	std::string winnerText;
+	void resetGame();
 };
