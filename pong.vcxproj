@@ -19,13 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ball.cpp" />
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputHandler.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="paddle.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
+    <ClCompile Include="TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ScoreManager.h" />
+    <ClInclude Include="TextRenderer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

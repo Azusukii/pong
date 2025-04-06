@@ -22,7 +22,7 @@ void Renderer::render(const Ball& ball, const Paddle& leftPaddle, const Paddle& 
     }
     // render the ball and paddles
     std::cout << "Rendering ball at: (" << ball.rect.x << ", " << ball.rect.y << ")" << std::endl;
-    ball.Render(renderer);
+    ball.render(renderer);
     
     std::cout << "Rendering left paddle at: (" << leftPaddle.rect.x << ", " << leftPaddle.rect.y << ")" << std::endl;
     leftPaddle.render(renderer);

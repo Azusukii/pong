@@ -8,10 +8,9 @@ public:
 	float speedX, speedY;   // for the speed 
 
 	Ball(int x, int y, int w, int h, float sX, float sY);
-	void updatePhysics(); // update physics only (no collision)																		
+	void updatePhysics(); // update physics with wall collision															
 	void paddleCollision(const SDL_Rect& leftPaddle, const SDL_Rect& rightPaddle); // check for paddle collision
-	bool outOfBounds() const; // check if ball is out of bounds
 	scoreResult checkScore() const; // check if a score has been made
 	void resetPos(int x, int y); // reset ball pos
-	void Render(SDL_Renderer* renderer) const; // for rendering
+	void render(SDL_Renderer* renderer) const; // for rendering
 };

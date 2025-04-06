@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "InputHandler.h"
 #include "Constants.h"
+#include "TextRenderer.h"
 
 class Game {
 public: 
@@ -28,4 +29,8 @@ private:
 	Renderer* renderer;
 	InputHandler input;
 	bool running;
+	TextRenderer textRenderer;
+	bool showScoreMessage;
+	std::string scoreMessage;
+	Uint32 messageStartTime;
 };
