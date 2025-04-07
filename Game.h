@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <iostream>
 #include "Ball.h"
 #include "Paddle.h"
@@ -19,6 +20,11 @@ public:
 	void update();
 	void render();
 	void clean();
+
+	//sfx
+	static Mix_Chunk* paddleHitSound;
+	static Mix_Chunk* scoreSound;
+	static Mix_Chunk* wallHitSound;
 
 private: 
 	SDL_Window* window;

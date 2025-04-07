@@ -15,7 +15,7 @@ bool InputHandler::handleEvents(bool& running, GameState::State& currentState) {
 					currentState = GameState::State::PLAYING;
 				}
 				else if (currentState == GameState::State::GAME_OVER) {
-					currentState = GameState::State::TITLE;
+					currentState = GameState::State::PLAYING;
 				}
 				else if (currentState == GameState::State::PAUSED) {
 					currentState = GameState::State::PLAYING;

@@ -1,6 +1,11 @@
 #include "Game.h"
 #include <iostream>
 
+//initialise sfx
+Mix_Chunk* Game::paddleHitSound = nullptr;
+Mix_Chunk* Game::scoreSound = nullptr;
+Mix_Chunk* Game::wallHitSound = nullptr; // initialize sound effects
+
 // constructor
 Game::Game() :
 	window(nullptr),
@@ -15,7 +20,8 @@ Game::Game() :
 	scoreMessage(""),
 	messageStartTime(0),
 	currentState(GameState::State::TITLE), // initialise with title state
-	winnerText("") {}// initialize winner text
+	winnerText("") {} // initialize winner text
+	
 
 
 Game::~Game() {
@@ -23,7 +29,7 @@ Game::~Game() {
 }
 
 bool Game::init() {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
 		std::cerr << "SDL_Init messed up! Error: " << SDL_GetError() << std::endl;
 		return false;
 	}
@@ -41,6 +47,29 @@ bool Game::init() {
 	if (TTF_Init() != 0) { // initialize SDL_ttf 
 		std::cerr << "SDL_ttf initialization messed up! Error: " << TTF_GetError() << std::endl;
 		return false;
+	}
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {// initialize SDL_mixer
+		std::cerr << "SDL_mixer initialization messed up! Error: " << Mix_GetError() << std::endl;
+		return false;
+	}
+	else {
+		// load sound effects
+		paddleHitSound = Mix_LoadWAV("sfx/paddle.wav");
+		if (!paddleHitSound) {
+			std::cerr << "Paddle hit sound loading messed up! Error: " << Mix_GetError() << std::endl;
+			return false;
+		}
+		scoreSound = Mix_LoadWAV("sfx/score.wav");
+		if (!scoreSound) {
+			std::cerr << "Score sound loading messed up! Error: " << Mix_GetError() << std::endl;
+			return false;
+		}
+		wallHitSound = Mix_LoadWAV("sfx/wall.wav");
+		if (!wallHitSound) {
+			std::cerr << "Wall hit sound loading messed up! Error: " << Mix_GetError() << std::endl;
+			return false;
+		}
 	}
 
 	if (!textRenderer.init("fonts/PressStart2P-vaV7.ttf", "fonts/KarmaticArcade-6Yrp1.ttf", 28, 48)) {
@@ -77,7 +106,7 @@ void Game::run() {
 void Game::update() {
 	// checking for transitions that require reset
 	static GameState::State lastState = currentState;
-	if (lastState == GameState::State::GAME_OVER && currentState == GameState::State::TITLE) {
+	if (lastState == GameState::State::GAME_OVER && currentState == GameState::State::PLAYING) {
 		resetGame();
 	}
 	lastState = currentState;
@@ -205,6 +234,20 @@ void Game::resetGame() {
 }
 
 void Game::clean() {
+	// free sfx
+	if (paddleHitSound) {
+		Mix_FreeChunk(paddleHitSound);
+		paddleHitSound = nullptr;
+	}
+	if (scoreSound) {
+		Mix_FreeChunk(scoreSound);
+		scoreSound = nullptr;
+	}
+	if (wallHitSound) {
+		Mix_FreeChunk(wallHitSound);
+		wallHitSound = nullptr;
+	}
+	Mix_CloseAudio();
 	textRenderer.clean();
 	delete renderer; // free the renderer memory
 	SDL_DestroyWindow(window);
