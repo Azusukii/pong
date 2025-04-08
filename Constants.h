@@ -10,7 +10,6 @@ namespace Constants {
 	const int PADDLE_SPEED = 5;
 	// ball
 	const int BALL_SIZE = 20;
-	const int BALL_SPEED = 5;
 	const int BALL_SPEED_X = 5;
 	const int BALL_SPEED_Y = 5;
 	// scores

@@ -8,7 +8,7 @@ Ball::Ball(int x, int y, int w, int h, float sX, float sY) {
 	rect = { x, y, w, h }; //init pos size
 	speedX = sX;
 	speedY = sY;
-	std::cout << "Ball created at: (" << x << ", " << y << ")" << std::endl;
+	// std::cout << "Ball created at: (" << x << ", " << y << ")" << std::endl;
 }
 
 void Ball::updatePhysics() {
@@ -19,7 +19,7 @@ void Ball::updatePhysics() {
 	if (rect.y <= 0) { 
 		rect.y = 0; 
 		speedY = abs(speedY);
-		std::cout << "Collision with top wall!" << std::endl;
+		// std::cout << "Collision with top wall!" << std::endl;
 
 		//play wall hit sfx
 		if (Game::wallHitSound) {
@@ -29,7 +29,7 @@ void Ball::updatePhysics() {
 	else if (rect.y >= Constants::SCREEN_HEIGHT - rect.h) { 
 		rect.y = Constants::SCREEN_HEIGHT - rect.h; 
 		speedY = -abs(speedY);
-		std::cout << "Collision with bottom wall!" << std::endl;
+		// std::cout << "Collision with bottom wall!" << std::endl;
 
 		if (Game::wallHitSound) {
 			Mix_PlayChannel(-1, Game::wallHitSound, 0);
@@ -38,12 +38,12 @@ void Ball::updatePhysics() {
 }
 
 void Ball::paddleCollision(const SDL_Rect& leftPaddle, const SDL_Rect& rightPaddle) {
+	const float speedIncreaseFactor = 1.1f; // increase speed by 10% on paddle hit
+	const float maxSpeed = Constants::BALL_SPEED_X * 1.5f; // maximum speed increase of 50%
 	//if hit paddles
 	 if (SDL_HasIntersection(&rect, &leftPaddle)) {
-		std::cout << "Collision with left paddle!" << std::endl;
+		// std::cout << "Collision with left paddle!" << std::endl;
 		speedX = abs(speedX);
-		const float speedIncreaseFactor = 1.1f; // increase speed by 10% on paddle hit
-		const float maxSpeed = Constants::BALL_SPEED_X * 1.5f; // maximum speed increase of 50%
 		if (speedX < maxSpeed) {
 			speedX *= speedIncreaseFactor; // gradually increase speed
 		}
@@ -56,10 +56,8 @@ void Ball::paddleCollision(const SDL_Rect& leftPaddle, const SDL_Rect& rightPadd
 		}
 	}
 	else if (SDL_HasIntersection(&rect, &rightPaddle)) {
-		std::cout << "Collision with right paddle!" << std::endl;
+		// std::cout << "Collision with right paddle!" << std::endl;
 		speedX = -abs(speedX); 
-		const float speedIncreaseFactor = 1.1f;
-		const float maxSpeed = Constants::BALL_SPEED_X * 1.5f;
 		if (abs(speedX) < maxSpeed) {
 			speedX *= speedIncreaseFactor;
 		}
@@ -80,14 +78,14 @@ Ball::scoreResult Ball::checkScore() const {
 		if (Game::scoreSound) {
 			Mix_PlayChannel(-1, Game::scoreSound, 0);
 		}
-		std::cout << "Right scored!" << std::endl;
+		// std::cout << "Right scored!" << std::endl;
 		return scoreResult::right_scored;
 	}
 	if (rect.x >= Constants::SCREEN_WIDTH - rect.w) { // change to using constants for versatility
 		if (Game::scoreSound) {
 			Mix_PlayChannel(-1, Game::scoreSound, 0);
 		}
-		std::cout << "Left scored!" << std::endl;
+		// std::cout << "Left scored!" << std::endl;
 		return scoreResult::left_scored;
 	}
 	return scoreResult::none;
@@ -96,7 +94,7 @@ Ball::scoreResult Ball::checkScore() const {
 void Ball::resetPos(int x, int y) {
 	rect.x = x;
 	rect.y = y;
-	std::cout << "Resetting ball position to: (" << x << ", " << y << ")" << std::endl;
+	// std::cout << "Resetting ball position to: (" << x << ", " << y << ")" << std::endl;
 	speedX = -speedX; // reverse direction after reset (for fairness)
 }
 

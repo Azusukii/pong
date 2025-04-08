@@ -77,7 +77,6 @@ bool Game::init() {
 		return false;
 	}
 	
-	// new renderer rather than direct 
 	renderer = new Renderer(SDL_renderer);
 	std::cout << "Renderer initialized" << std::endl;
 	
@@ -88,18 +87,14 @@ bool Game::init() {
 void Game::run() {
 	auto input = InputHandler();
 	while (running) {
-		//process inputs
 		input.handleEvents(running, currentState);
 		input.handleInput(leftPaddle, rightPaddle, currentState);
 
-		//update game
 		update();
 
-		//render game
 		render();
 
-		//delay -> 60fps
-		SDL_Delay(1000/60);
+		SDL_Delay(1000 / 60); // 60 FPS
 	}
 }
 
@@ -109,24 +104,23 @@ void Game::update() {
 	if (lastState == GameState::State::GAME_OVER && currentState == GameState::State::PLAYING) {
 		resetGame();
 	}
+	if (lastState == GameState::State::PAUSED && currentState == GameState::State::TITLE) {
+		resetGame();
+	}
 	lastState = currentState;
 
 	// handle different game states
 	switch (currentState) {
 	case GameState::State::TITLE: 
-
 		return;
 
 	case GameState::State::PAUSED:
-
 		return;
 
 	case GameState::State::GAME_OVER:
-
 		return;
 
 	case GameState::State::PLAYING:
-
 		break;
 	}
 	if (showScoreMessage) {
@@ -204,7 +198,8 @@ void Game::render() {
 		renderer->render(ball, leftPaddle, rightPaddle);
 		textRenderer.renderScore(SDL_renderer, scoreManager.getLeftScore(), scoreManager.getRightScore());
 		textRenderer.renderCenteredText(SDL_renderer, "PAUSED", Constants::SCREEN_HEIGHT / 2, { 255, 255, 255, 255 });
-		textRenderer.renderCenteredText(SDL_renderer, "Press SPACE to continue", Constants::SCREEN_HEIGHT / 2 + 50, { 255, 255, 255, 255 });
+		textRenderer.renderCenteredText(SDL_renderer, "Press SPACE to reset", Constants::SCREEN_HEIGHT / 2 + 50, { 255, 255, 255, 255 });
+		textRenderer.renderCenteredText(SDL_renderer, "Press ESC to unpause", Constants::SCREEN_HEIGHT / 2 + 100, { 255, 255, 255, 255 });
 		break;
 
 	case GameState::State::GAME_OVER:
