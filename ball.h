@@ -13,4 +13,5 @@ public:
 	scoreResult checkScore() const; // check if a score has been made
 	void resetPos(int x, int y); // reset ball pos
 	void render(SDL_Renderer* renderer) const; // for rendering
+	void resetSpeed(float sX, float sY);
 };

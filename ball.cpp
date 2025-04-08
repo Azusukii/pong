@@ -39,7 +39,7 @@ void Ball::updatePhysics() {
 
 void Ball::paddleCollision(const SDL_Rect& leftPaddle, const SDL_Rect& rightPaddle) {
 	const float speedIncreaseFactor = 1.1f; // increase speed by 10% on paddle hit
-	const float maxSpeed = Constants::BALL_SPEED_X * 1.5f; // maximum speed increase of 50%
+	const float maxSpeed = Constants::BALL_SPEED_X * 3.0f; // maximum speed increase of 300%
 	//if hit paddles
 	 if (SDL_HasIntersection(&rect, &leftPaddle)) {
 		// std::cout << "Collision with left paddle!" << std::endl;
@@ -95,7 +95,11 @@ void Ball::resetPos(int x, int y) {
 	rect.x = x;
 	rect.y = y;
 	// std::cout << "Resetting ball position to: (" << x << ", " << y << ")" << std::endl;
-	speedX = -speedX; // reverse direction after reset (for fairness)
+}
+
+void Ball::resetSpeed(float sX, float sY) {
+	speedX = sX;
+	speedY = sY;
 }
 
 void Ball::render(SDL_Renderer* renderer) const {

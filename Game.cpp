@@ -231,6 +231,8 @@ void Game::update() {
 
 
 		ball.resetPos(Constants::BALL_X, Constants::BALL_Y);
+		// reverse direction for fairness but keep initial speed
+		ball.speedX = -ball.speedX > 0 ? Constants::BALL_SPEED_X : -Constants::BALL_SPEED_X;
 
 		if (scoreManager.checkWin()) {
 			// update winner text
@@ -296,6 +298,7 @@ void Game::resetGame() {
 
 	// reset ball
 	ball = Ball(Constants::BALL_X, Constants::BALL_Y, Constants::BALL_SIZE, Constants::BALL_SIZE, Constants::BALL_SPEED_X, Constants::BALL_SPEED_Y);
+	ball.resetSpeed(Constants::BALL_SPEED_X, Constants::BALL_SPEED_Y);
 
 	// reset score
 	scoreManager.reset();
