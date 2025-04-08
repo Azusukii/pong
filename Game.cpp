@@ -5,6 +5,9 @@
 Mix_Chunk* Game::paddleHitSound = nullptr;
 Mix_Chunk* Game::scoreSound = nullptr;
 Mix_Chunk* Game::wallHitSound = nullptr; // initialize sound effects
+Mix_Chunk* Game::titleSound = nullptr;
+Mix_Chunk* Game::stageStartSound = nullptr;
+Mix_Chunk* Game::gameOverSound = nullptr;
 
 // constructor
 Game::Game() :
@@ -20,7 +23,9 @@ Game::Game() :
 	scoreMessage(""),
 	messageStartTime(0),
 	currentState(GameState::State::TITLE), // initialise with title state
-	winnerText("") {} // initialize winner text
+	winnerText(""), // initialize winner text
+	isStageStarting(false), // initialize stage start
+	stageStartTime(0) {} // initialize stage start time
 	
 
 
@@ -70,6 +75,18 @@ bool Game::init() {
 			std::cerr << "Wall hit sound loading messed up! Error: " << Mix_GetError() << std::endl;
 			return false;
 		}
+		titleSound = Mix_LoadWAV("sfx/title.wav");
+		if (!titleSound) {
+			std::cerr << "Title sound loading messed up! Error: " << Mix_GetError() << std::endl;
+		}
+		stageStartSound = Mix_LoadWAV("sfx/stagestart.wav");
+		if (!stageStartSound) {
+			std::cerr << "Stage start sound loading messed up! Error: " << Mix_GetError() << std::endl;
+		}
+		gameOverSound = Mix_LoadWAV("sfx/gameover.wav");
+		if (!gameOverSound) {
+			std::cerr << "Game over sound loading messed up! Error: " << Mix_GetError() << std::endl;
+		}
 	}
 
 	if (!textRenderer.init("fonts/PressStart2P-vaV7.ttf", "fonts/KarmaticArcade-6Yrp1.ttf", 28, 48)) {
@@ -81,6 +98,11 @@ bool Game::init() {
 	std::cout << "Renderer initialized" << std::endl;
 	
 	running = true;
+
+	// play title sound upon game start
+	if (titleSound) {
+		Mix_PlayChannel(-1, titleSound, 0);
+	}
 	return true;
 }
 
@@ -98,15 +120,67 @@ void Game::run() {
 	}
 }
 
+void Game::handleStateTransitions(GameState::State lastState) {
+	if (lastState != currentState) {
+
+		Mix_HaltChannel(-1); // stop all sounds before playing new one
+		if (lastState == GameState::State::TITLE && currentState == GameState::State::PLAYING) {
+			// redirect to stage start
+			currentState = GameState::State::STAGE_START;
+			isStageStarting = true;
+			stageStartTime = SDL_GetTicks();
+
+			// play stage start sound
+			if (stageStartSound) {
+				Mix_PlayChannel(-1, stageStartSound, 0);
+			}
+		}
+		// game over to playing transition (through stage start)
+		else if (lastState == GameState::State::GAME_OVER && currentState == GameState::State::PLAYING) {
+			resetGame();
+			currentState = GameState::State::STAGE_START;
+			isStageStarting = true;
+			stageStartTime = SDL_GetTicks();
+
+			// play stage start sound
+			if (stageStartSound) {
+				Mix_PlayChannel(-1, stageStartSound, 0);
+			}
+		}
+		// pause to title transition
+		else if (lastState == GameState::State::PAUSED && currentState == GameState::State::TITLE) {
+			resetGame();
+
+			// play title sound
+			if (titleSound) {
+				Mix_PlayChannel(-1, titleSound, 0);
+			}
+		}
+		else if (lastState != GameState::State::GAME_OVER && currentState == GameState::State::GAME_OVER) {
+			// play game over sound
+			if (gameOverSound) {
+				Mix_PlayChannel(-1, gameOverSound, 0);
+			}
+		}
+	}
+}
 void Game::update() {
 	// checking for transitions that require reset
 	static GameState::State lastState = currentState;
-	if (lastState == GameState::State::GAME_OVER && currentState == GameState::State::PLAYING) {
-		resetGame();
+	// handle state transitions and sounds
+	handleStateTransitions(lastState);
+
+	// stage start timer
+	if (currentState == GameState::State::STAGE_START) {
+		Uint32 currentTime = SDL_GetTicks();
+		if (currentTime - stageStartTime >= Constants::STAGE_START_TIME) {
+			currentState = GameState::State::PLAYING;
+			isStageStarting = false;
+		}
+		lastState = currentState; // update last state
+		return; // don't process anything while in stage start
 	}
-	if (lastState == GameState::State::PAUSED && currentState == GameState::State::TITLE) {
-		resetGame();
-	}
+
 	lastState = currentState;
 
 	// handle different game states
@@ -184,6 +258,10 @@ void Game::render() {
 		textRenderer.renderCenteredText(SDL_renderer, "Press SPACE to start!", Constants::SCREEN_HEIGHT / 2, { 255, 255, 255, 255 });
 		textRenderer.renderCenteredText(SDL_renderer, "A small game by Azura", Constants::SCREEN_HEIGHT / 1.5, { 255, 255, 255, 255 });
 		break;
+	case GameState::State::STAGE_START:
+		textRenderer.renderCenteredText(SDL_renderer, "GET READY!", Constants::SCREEN_HEIGHT / 3, { 255, 255, 255, 255 });
+		textRenderer.renderCenteredText(SDL_renderer, "Stage Starting...", Constants::SCREEN_HEIGHT / 2, { 255, 255, 255, 255 });
+		break;
 	case GameState::State::PLAYING:
 		renderer->render(ball, leftPaddle, rightPaddle);
 		textRenderer.renderScore(SDL_renderer, scoreManager.getLeftScore(), scoreManager.getRightScore());
@@ -226,6 +304,7 @@ void Game::resetGame() {
 	showScoreMessage = false;
 	scoreMessage = "";
 	winnerText = "";
+	isStageStarting = false;
 }
 
 void Game::clean() {
@@ -241,6 +320,18 @@ void Game::clean() {
 	if (wallHitSound) {
 		Mix_FreeChunk(wallHitSound);
 		wallHitSound = nullptr;
+	}
+	if (titleSound) {
+		Mix_FreeChunk(titleSound);
+		titleSound = nullptr;
+	}
+	if (stageStartSound) {
+		Mix_FreeChunk(stageStartSound);
+		stageStartSound = nullptr;
+	}
+	if (gameOverSound) {
+		Mix_FreeChunk(gameOverSound);
+		gameOverSound = nullptr;
 	}
 	Mix_CloseAudio();
 	textRenderer.clean();

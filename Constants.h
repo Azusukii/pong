@@ -24,11 +24,15 @@ namespace Constants {
 	//display message
 	const int MESSAGE_DISPLAY_TIME = 3000; //3000ms approx 3 sec
 	const int MESSAGE_Y_POS = SCREEN_HEIGHT / 2 - 50; // text pos middle of screen
+
+	// stage start screen
+	const int STAGE_START_TIME = 2000; // 2 seconds
 }
 
 namespace GameState {
 	enum class State {
 		TITLE,
+		STAGE_START,
 		PLAYING,
 		PAUSED,
 		GAME_OVER

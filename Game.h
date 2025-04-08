@@ -25,22 +25,39 @@ public:
 	static Mix_Chunk* paddleHitSound;
 	static Mix_Chunk* scoreSound;
 	static Mix_Chunk* wallHitSound;
+	static Mix_Chunk* titleSound;
+	static Mix_Chunk* stageStartSound;
+	static Mix_Chunk* gameOverSound;
 
 private: 
 	SDL_Window* window;
 	SDL_Renderer* SDL_renderer;
+
+	//game objects
 	Paddle leftPaddle;
 	Paddle rightPaddle;
 	Ball ball;
 	ScoreManager scoreManager;
 	Renderer* renderer;
 	InputHandler input;
-	bool running;
 	TextRenderer textRenderer;
+
+	// game state
+	bool running;
+	GameState::State currentState;
+	
+	// score message
 	bool showScoreMessage;
 	std::string scoreMessage;
 	Uint32 messageStartTime;
-	GameState::State currentState;
+
+	// winner text (game over basically)
 	std::string winnerText;
+
+	// stage start variables
+	bool isStageStarting;
+	Uint32 stageStartTime;
+
 	void resetGame();
+	void handleStateTransitions(GameState::State lastState);
 };
